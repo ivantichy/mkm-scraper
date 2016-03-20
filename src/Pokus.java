@@ -46,7 +46,7 @@ public class Pokus {
 		FileWriter page = new FileWriter(DOWNLOAD_PATH + "\\page.html");
 
 		File profileDir = new File(
-				"c:\\Users\\Ivan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\ya2cbv31.default\\");
+				"c:\\Users\\Ivan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\ohgz41ie.default-1457535758959\\");
 		FirefoxProfile profile = new FirefoxProfile(profileDir);
 
 		FirefoxDriver wd = new FirefoxDriver(profile);
