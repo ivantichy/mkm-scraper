@@ -46,7 +46,7 @@ public class Pokus {
 		FileWriter page = new FileWriter(DOWNLOAD_PATH + "\\page.html");
 
 		File profileDir = new File(
-				"c:\\Users\\Ivan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\ohgz41ie.default-1457535758959\\");
+				"c:\\Users\\Ivan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\ya2cbv31.default\\");
 		FirefoxProfile profile = new FirefoxProfile(profileDir);
 
 		FirefoxDriver wd = new FirefoxDriver(profile);
@@ -169,14 +169,16 @@ public class Pokus {
 
 						String line = url + ";" + wd.getTitle().replace(';', ',') + ";" + object;
 						logger.write(line + "\r\n");
+						
 
 					}
 
 				}
 
 			}
+			wd.get("www.google.com");
 
-			cekejCas(10, 12);
+			cekejCas(2, 3);
 
 		}
 		logger.close();
@@ -224,8 +226,9 @@ public class Pokus {
 
 	public static void main(String[] args) throws Exception {
 
-		stahni("http://www.maxkravmaga.com/members/p1.cfm", "P1x");
-		stahni("http://www.maxkravmaga.com/members/p2.cfm", "P2x");
+		// NEE znovu stahni("http://www.maxkravmaga.com/members/p1.cfm", "P1x");
+		//stahni("http://www.maxkravmaga.com/members/p2.cfm", "P2x")
+		
 		stahni("http://www.maxkravmaga.com/members/p3.cfm", "P3x");
 		stahni("http://www.maxkravmaga.com/members/p4.cfm", "P4x");
 		stahni("http://www.maxkravmaga.com/members/p5.cfm", "P5x");
