@@ -27,11 +27,11 @@ public class Other {
 		
 		
 		
-		stahni("http://www.maxkravmaga.com/members/krav-maga-theory-and-lectures.cfm","TheoryAndLectures");
+	//	stahni("http://www.maxkravmaga.com/members/krav-maga-theory-and-lectures.cfm","TheoryAndLectures");
 		
-		stahni("http://www.maxkravmaga.com/members/using-firearms-as-non-lethal-weapons.cfm","Firearms");
+		//stahni("http://www.maxkravmaga.com/members/using-firearms-as-non-lethal-weapons.cfm","Firearms");
 		
-		stahni("http://www.maxkravmaga.com/members/intro-to-anticarjacking-and-road-rage-defense.cfm", "AntiCarJacking");
+//		stahni("http://www.maxkravmaga.com/members/intro-to-anticarjacking-and-road-rage-defense.cfm", "AntiCarJacking");
 
 	}
 
@@ -178,7 +178,7 @@ public class Other {
 
 		Files.createDirectories(Paths.get(SubjectMatter.DOWNLOAD_PATH));
 
-		wd.quit();
+	//	wd.quit();
 
 	}
 

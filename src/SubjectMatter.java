@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -22,10 +23,10 @@ public class SubjectMatter {
 
 	public final static String DOWNLOAD_PATH = "c:\\Users\\Ivan\\dwhelper\\";
 
-	public final static String RESULTS_PATH = "c:\\temp\\mkm\\results\\";
+	public final static String RESULTS_PATH = "c:\\Users\\Ivan\\Dropbox (Ivan)\\MKM\\results\\";
 
 	static File profileDir = new File(
-			"c:\\Users\\Ivan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\ya2cbv31.default\\");
+			"c:\\Users\\Ivan\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\bu76anet.default\\");
 	static FirefoxProfile profile = new FirefoxProfile(profileDir);
 
 	static FirefoxDriver wd = new FirefoxDriver(profile);
@@ -75,10 +76,10 @@ public class SubjectMatter {
 		// wd.findElement(By.cssSelector("body")).click();
 		wd.findElement(By.id("UserID")).click();
 		wd.findElement(By.id("UserID")).clear();
-		wd.findElement(By.id("UserID")).sendKeys("xxxx");
+		wd.findElement(By.id("UserID")).sendKeys("xxxxx");
 		wd.findElement(By.id("Password")).click();
 		wd.findElement(By.id("Password")).clear();
-		wd.findElement(By.id("Password")).sendKeys("xxx");
+		wd.findElement(By.id("Password")).sendKeys("xxxxx");
 		try {
 			wd.findElement(By.id("Password")).submit();
 		} catch (Exception e) {
@@ -187,8 +188,8 @@ public class SubjectMatter {
 	public static void getTitles() throws IOException, InterruptedException {
 
 		Map<String, String> global = Files.lines(
-				Paths.get(RESULTS_PATH + "\\global.txt")).collect(
-				Collectors.toMap(p -> p.split(";")[2], p -> p));
+				Paths.get(RESULTS_PATH + "global.txt"), Charset.forName("Cp1252")).collect(
+				Collectors.toMap(p -> p.split(";")[1], p -> p));
 		String out = "";
 
 		List<String> list = Files.readAllLines(Paths.get(RESULTS_PATH

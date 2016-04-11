@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -222,10 +223,12 @@ public class FilesWalkerTexasRanger {
 
 		}
 
-		System.out.println("Listing the rest of files");
+		if (unusedfiles.size() > 0) {
+			System.out.println("Listing the rest of files");
+		}
 		unusedfiles.forEach(v -> System.out.println(v));
 
-		if (logger.size() != files.size() - 2) {
+		if (logger.size() != files.size()) {
 
 			System.out.println("Count does not match L:" + logger.size()
 					+ " F:" + files.size());
@@ -251,9 +254,9 @@ public class FilesWalkerTexasRanger {
 
 	}
 
-	public static final String GLOBALLISTFILE = "c:\\temp\\mkm\\results\\global.txt";
-	public static final String GLOBALEXPLICITLISTFILE = "c:\\temp\\mkm\\results\\global_explicit.txt";
-	public static final String UNKNOWNFILE = "c:\\temp\\mkm\\results\\unknown.txt";
+	public static final String GLOBALLISTFILE = "c:\\Users\\Ivan\\Dropbox\\MKM\\results\\global.txt";
+	public static final String GLOBALEXPLICITLISTFILE = "c:\\Users\\Ivan\\Dropbox\\MKM\\results\\global_explicit.txt";
+	public static final String UNKNOWNFILE = "c:\\Users\\Ivan\\Dropbox\\MKM\\results\\unknown.txt";
 
 	public static void resetGlobalList() throws IOException {
 
@@ -286,9 +289,7 @@ public class FilesWalkerTexasRanger {
 		}
 		Files.write(Paths.get(GLOBALLISTFILE), output.getBytes());
 
-		Files.write(Paths.get(GLOBALLISTFILE),
-				Files.readAllBytes(Paths.get(GLOBALEXPLICITLISTFILE)),
-				StandardOpenOption.APPEND);
+	
 
 	}
 
@@ -309,28 +310,82 @@ public class FilesWalkerTexasRanger {
 
 		resetGlobalList();
 
-		levels("c:\\temp\\mkm\\results\\G1\\");
-		levels("c:\\temp\\mkm\\results\\G2\\");
-		levels("c:\\temp\\mkm\\results\\G3\\");
-		levels("c:\\temp\\mkm\\results\\G4\\");
-		levels("c:\\temp\\mkm\\results\\G5\\");
-
-		levels("c:\\temp\\mkm\\results\\P1\\");
-		levels("c:\\temp\\mkm\\results\\P2\\");
-		levels("c:\\temp\\mkm\\results\\P3\\");
-		levels("c:\\temp\\mkm\\results\\P4\\");
-		levels("c:\\temp\\mkm\\results\\P5\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\G1\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\G2\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\G3\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\G4\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\G5\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\P1\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\P2\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\P3\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\P4\\");
+		levels("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\P5\\");
 
 		writeGlobalList();
 
-		subjectMatter("c:\\temp\\mkm\\results\\DefendingArmedAttacksBluntObjects\\");
+	//	walkTitles();
+		Files.write(Paths.get(GLOBALLISTFILE),
+				Files.readAllBytes(Paths.get(GLOBALEXPLICITLISTFILE)),
+				StandardOpenOption.APPEND);
+	
 
-		subjectMatter("c:\\temp\\mkm\\results\\CounterAttacks\\");
+		subjectMatter("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\DefendingArmedAttacksBluntObjects\\");
 
-		subjectMatter("c:\\temp\\mkm\\results\\DefendingUnarmedAttacks\\");
-		subjectMatter("c:\\temp\\mkm\\results\\GroundFighting\\");
-		subjectMatter("c:\\temp\\mkm\\results\\ChokeGrabReleases\\");
+		subjectMatter("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\CounterAttacks\\");
+
+		subjectMatter("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\DefendingUnarmedAttacks\\");
+		subjectMatter("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\GroundFighting\\");
+		subjectMatter("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\ChokeGrabReleases\\");
 		writeUnknown();
+
+	}
+
+	public static void walkTitles() throws IOException {
+
+		String output = "";
+
+		Map<String, String> map = Files
+				.lines(Paths
+						.get("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\titles.txt"),
+						Charset.forName("Cp1252")).collect(
+						Collectors.toMap(l -> l.split(";")[0].trim(),
+								l -> l.split(";")[2].trim()));
+
+		for (Iterator<Entry<String, String>> iterator = map.entrySet()
+				.iterator(); iterator.hasNext();) {
+			Entry<String, String> entry = iterator.next();
+			String link = entry.getKey();
+			String title = entry.getValue();
+
+			// text, file
+			Map<String, String> list = Files.lines(Paths.get(GLOBALLISTFILE),
+					Charset.forName("Cp1252"))
+					.collect(
+							Collectors.toMap(p -> p.split(";")[2],
+									p -> p.split(";")[1]));
+
+			TreeMap<String, String> tree = new TreeMap<String, String>(
+					new MyMatcher2(title));
+
+			tree.putAll(list);
+
+			String selectedtext = tree.lastKey();
+			String filename = tree.get(selectedtext);
+
+			if (StringUtils.getJaroWinklerDistance(selectedtext, title) < 0.99) {
+
+				System.out.println("titles - Too far away ");
+				System.out.println("S:" + selectedtext);
+				System.out.println("T:" + title);
+
+			}
+
+			output += link + ";" + filename + ";" + title + "\r\n";
+		}
+
+		Files.write(
+				Paths.get("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\generatedGlobal.txt"),
+				output.getBytes(), StandardOpenOption.CREATE);
 
 	}
 
@@ -404,7 +459,7 @@ public class FilesWalkerTexasRanger {
 				Collectors.toMap(
 						l -> l.split(";")[2]
 								.replaceAll("Training Syllabus", "").trim(),
-						l -> l.split(";")[1].trim()));
+						l -> l.split(";")[1].trim(), (a, b) -> a ));
 
 		while (m.find()) {
 
@@ -553,8 +608,8 @@ public class FilesWalkerTexasRanger {
 		}
 
 		/*
-		 * Files.write(Paths.get("c:\\temp\\mkm\\results\\test.html"),
-		 * page.getBytes(), StandardOpenOption.CREATE);
+		 * Files.write(Paths.get("c:\\Users\\Ivan\\Dropbox\\MKM\\results\\test.html"
+		 * ), page.getBytes(), StandardOpenOption.CREATE);
 		 */
 		// /System.exit(0);
 
